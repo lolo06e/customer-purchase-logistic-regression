@@ -1,0 +1,77 @@
+============================================================
+1. PROBLEM STATEMENT
+============================================================
+Predict whether a customer will Buy or Not Buy a product,
+using the customer's age, income, the product price and
+how many times they have bought from the shop before.
+
+First 5 rows of the dataset:
+   age  income  product_price  previous_purchases  purchased
+0   22  3387.0         463.99                   3          0
+1   55  1391.0         480.35                   2          0
+2   49  1740.0         682.56                   4          0
+3   39  6055.0          23.70                   5          1
+4   38  1955.0         685.63                   4          0 
+
+Rows: 500   Buy: 238   Not Buy: 262
+
+============================================================
+2. FEATURES (X): ['age', 'income', 'product_price', 'previous_purchases']
+3. TARGET  (y): purchased -> 1 = Buy, 0 = Not Buy
+============================================================ 
+
+4. SPLIT -> train: 400 rows, test: 100 rows
+
+5. MODEL TRAINED. Coefficients (on scaled features):
+   age                  -0.634  (lowers chance of buying)
+   income               +2.327  (raises chance of buying)
+   product_price        -2.497  (lowers chance of buying)
+   previous_purchases   +1.373  (raises chance of buying)
+   intercept            -0.248
+
+============================================================
+7. ACCURACY: 0.860  (86.0% of test customers predicted correctly)
+============================================================ 
+
+8. CONFUSION MATRIX
+                 Predicted Not Buy   Predicted Buy
+Actual Not Buy           45                 7
+Actual Buy                7                41
+
+   TN=45 (correct Not Buy)  FP=7 (said Buy, didn't)
+   FN=7 (missed a buyer)   TP=41 (correct Buy)
+
+              precision    recall  f1-score   support
+
+     Not Buy       0.87      0.87      0.87        52
+         Buy       0.85      0.85      0.85        48
+
+    accuracy                           0.86       100
+   macro avg       0.86      0.86      0.86       100
+weighted avg       0.86      0.86      0.86       100
+
+Confusion matrix image saved -> /sessions/rcw-01h64dajqvtqvz24dwjehlq3/mnt/machine-learning-class/task4_customer_purchase/confusion_matrix.png
+
+9. PREDICTED EXAMPLES (from the test set)
+ age  income  product_price  previous_purchases  P(Buy) predicted  actual correct?
+  44  4477.0         384.76                   6   0.988       Buy     Buy      yes
+  50  3270.0         128.15                   3   0.904       Buy Not Buy       NO
+  52  2950.0         361.63                   3   0.263   Not Buy Not Buy      yes
+  64  4449.0          35.42                   3   0.992       Buy     Buy      yes
+  61  5897.0          74.32                   3   0.999       Buy     Buy      yes
+  24  4205.0         156.77                   2   0.985       Buy     Buy      yes
+  23  4955.0         127.02                   1   0.994       Buy     Buy      yes
+  56  2393.0         115.14                   0   0.121   Not Buy Not Buy      yes 
+
+New customers:
+ age  income  product_price  previous_purchases  P(Buy) prediction
+  25    6000            150                   6     1.0        Buy
+  50    2000            700                   0     0.0    Not Buy 
+
+============================================================
+10. EXPLANATION
+============================================================
+The Logistic Regression model predicted Buy / Not Buy correctly for 86.0% of the 100 test customers.
+Product price has the strongest negative effect: expensive products are much less likely to be bought, while higher income and more previous purchases raise the chance of buying; older customers are slightly less likely to buy.
+The confusion matrix shows 14 mistakes (7 false Buy, 7 missed buyers); 10 of them had a predicted probability between 0.2 and 0.8, i.e. borderline customers.
+Because the classes are balanced and errors are split fairly evenly, accuracy is a fair summary here, and the model is useful for deciding which customers to target with offers.
